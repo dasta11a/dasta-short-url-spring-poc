@@ -17,20 +17,19 @@ import com.dasta.shorturl.model.ShortURL;
 @Component
 public class ShortURLDatabase {
 
-	private Map<String, ShortURL> urlMap = new HashMap<>();
+	private Map<String, String> urlMap = new HashMap<>();
 	private Map<String, ShortURL> fullURLMap = new HashMap<>();
 	private long next = 9837912415197L;
 
 	public String getShortURL(String fullURL) {
-		ShortURL model = fullURLMap.get(fullURL);
-		if (model == null) {
-			model = new ShortURL(fullURL, next++);
-			String shortURL = model.getShortURL();
-			urlMap.put(shortURL, model);
+		String shortURL = urlMap.get(fullURL);
+		if (shortURL == null) {
+			ShortURL model = new ShortURL(fullURL, next++);
+			shortURL = model.getShortURL();
+			urlMap.put(fullURL, shortURL);
 			fullURLMap.put(shortURL, model);
-			return shortURL;
 		}
-		return model.getUrl();
+		return shortURL;
 	}
 
 	public String getFullURL(String shortURL) {
